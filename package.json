@@ -8,7 +8,6 @@
     "optimist": "0.3.4",
     "express": "*",
     "socket.io": "*",
-    "one": "*",
     "async": "*",
     "uglify-js": "*",
     "express": "2.5.10",
@@ -22,6 +21,7 @@
   },
   "devDependencies": {},
   "optionalDependencies": {},
+  "bundleDependencies": [ "one" ],
   "engines": {
     "node": "*"
   }
