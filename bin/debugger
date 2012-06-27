@@ -6,12 +6,18 @@ var fs = require('fs');
 var watch = require('fs-watch-tree').watchTree;
 var build = require('../lib/build');
 
-var argv = require('optimist')
-  .usage('Usage: $0')
+var optimist = require('optimist')
+  .usage('Debugger for uijs apps and modules\nUsage: $0')
   .describe('a', 'path to a cui app (with package.json and all)').alias('a', 'app').default('app', process.cwd())
   .describe('w', 'additional directories to watch for changes').alias('w', 'watch').default('watch', [])
   .describe('pre', 'optional prebuild script to execute before every build (cwd will be the app\'s directory)')
-  .argv;
+
+var argv = optimist.argv;
+
+if (argv.help || argv.h) {
+  process.stdout.write(optimist.help());
+  return;
+}
 
 var server = express.createServer();
 var building = false;

@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 var build = require('../lib/build');
+
+var optimist = require('optimist')
+  .usage('Build script for uijs apps and modules\nUsage: $0');
+
 build(function(err) {
   if (err) console.error(err);
   console.log('build done');

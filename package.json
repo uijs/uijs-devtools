@@ -1,7 +1,7 @@
 {
   "author": "",
   "name": "uijs-devtools",
-  "description": "Toolchain (build, debugger) for cui",
+  "description": "Toolchain (build, debugger) for uijs",
   "version": "0.0.0",
   "main": "./lib",
   "dependencies": {
