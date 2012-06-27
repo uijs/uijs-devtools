@@ -1,6 +1,6 @@
 {
   "author": "",
-  "name": "cui-toolchain",
+  "name": "uijs-devtools",
   "description": "Toolchain (build, debugger) for cui",
   "version": "0.0.0",
   "main": "./lib",
@@ -16,8 +16,8 @@
     "ncp": "0.2.6"
   },
   "bin": {
-    "cui-debugger": "bin/debugger",
-    "cui-build": "bin/build"
+    "uijs-debugger": "bin/debugger",
+    "uijs-build": "bin/build"
   },
   "devDependencies": {},
   "optionalDependencies": {},
