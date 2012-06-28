@@ -1,10 +1,22 @@
 #!/usr/bin/env node
 var build = require('../lib/build');
 
-var optimist = require('optimist')
-  .usage('Build script for uijs apps and modules\nUsage: $0');
+var argv = require('optimist')
+  .usage('Build script for uijs apps and modules\nUsage: $0')
+  .alias('v', 'verbose')
+  .argv
 
-build(function(err) {
-  if (err) console.error(err);
-  console.log('build done');
+if (argv._.length === 0) {
+  argv._.push(process.cwd());
+}
+
+argv._.forEach(function(package) {
+  var options = {};
+  options.package = package;
+  options.verbose = argv.verbose;
+  console.log('building', package);
+  build(options, function(err) {
+    if (err) console.error(package, err);
+    else console.log(package, 'built');
+  });  
 });

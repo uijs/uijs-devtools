@@ -62,7 +62,7 @@ function fixname(filename){
 
 function loadModule(filename, callback){
 
-  logging.debug('Loading module "'+filename+'"');
+  logging.trace('Loading module "'+filename+'"');
 
   readFile(filename, function(error, bf){
     if(error) {

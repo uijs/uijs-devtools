@@ -19,11 +19,11 @@
     <script src=''></script>
     <script>
     window.onload = function() {
-      var cui = require('cui');
+      var uijs = require('uijs');
       
       // -- create canvas
 
-      var canvas = cui.canvasize();
+      var canvas = uijs.canvasize();
 
       // -- add app to canvas
 
@@ -37,7 +37,7 @@
       script.onload = function() {
         if (typeof io !== 'undefined') {
           var socket = io.connect('/');
-          canvas.add(cui.rterm(socket));
+          canvas.add(uijs.rterm(socket));
         }
       };
       script.onerror = function(e) {
