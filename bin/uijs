@@ -6,12 +6,11 @@ var debug = require('../lib/debugger');
 
 var usage = [
   'Development tools for uijs apps and modules',
-  'Usage: $0 <command> <app>',
+  'Usage: $0 <command> <app> [options]',
   '',
   '<command> is one of:',
   '  build - Builds a uijs module or app',
   '  debug - Starts a debugging server for a uijs module/app (also builds)',
-  '  watch - Starts a debugging server and watches for changes',
   '',
   '<app> is is one of:',
   '  (not specified) - Looks for package.json in current directory',
@@ -22,8 +21,8 @@ var usage = [
 
 var optimist = require('optimist')
   .usage(usage.join('\n'))
-  .describe('w', 'directories to watch for changes (default is cwd)').alias('w', 'watch')
-  .describe('pre', 'optional prebuild script to execute before every build (cwd will be the app\'s directory)')
+  .describe('w', 'watch for changes (defaults to cwd). multiple -w options may be used').alias('w', 'watch')
+  // .describe('pre', 'optional prebuild script to execute before every build (cwd will be the app\'s directory)')
   .describe('verbose', 'verbose output').alias('v', 'verbose')
   .alias('h', 'help');
 
