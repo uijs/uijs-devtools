@@ -16,8 +16,7 @@
     "ncp": "0.2.6"
   },
   "bin": {
-    "uijs-debugger": "bin/debugger",
-    "uijs-build": "bin/build"
+    "uijs": "bin/uijs"
   },
   "devDependencies": {},
   "optionalDependencies": {},
