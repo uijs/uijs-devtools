@@ -22,7 +22,6 @@ var usage = [
 var optimist = require('optimist')
   .usage(usage.join('\n'))
   .describe('w', 'watch for changes (defaults to cwd). multiple -w options may be used').alias('w', 'watch')
-  // .describe('pre', 'optional prebuild script to execute before every build (cwd will be the app\'s directory)')
   .describe('verbose', 'verbose output').alias('v', 'verbose')
   .alias('h', 'help');
 
@@ -33,20 +32,20 @@ if (argv.h || argv._.length < 1 || argv._.length > 2) {
   return;
 }
 
-
 var command = argv._[0];
 var app = argv._[1] || process.cwd();
-
 
 var watchlist = argv.watch;
 if (!watchlist) watchlist = [];
 if (watchlist === true) watchlist = [ app ];
 else if (!Array.isArray(watchlist)) watchlist = [ watchlist ];
 
-console.log('watch list:', watchlist);
 var building = false;
-watchlist.forEach(function(dir) {
-  var exclude = [ 'dist', 'node_modules', '.git' ];
+watchlist.forEach(function(watchitem) {
+  var dir = watchitem;
+  if (path.extname(watchitem)) dir = path.dirname(watchitem);
+
+  var exclude = [ 'dist', 'node_modules', '.git', '.+\.uijs\..+' ];
   
   console.log('Watching', dir, 'exclude:', exclude);
   watch(dir, { exclude: exclude }, function(event) {
