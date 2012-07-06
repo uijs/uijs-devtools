@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var path = require('path');
+var fs = require('fs');
 var watch = require('fs-watch-tree').watchTree;
 var build = require('../lib/build');
 var debug = require('../lib/debugger');
@@ -42,26 +43,36 @@ else if (!Array.isArray(watchlist)) watchlist = [ watchlist ];
 
 var building = false;
 watchlist.forEach(function(watchitem) {
-  var dir = watchitem;
-  if (path.extname(watchitem)) dir = path.dirname(watchitem);
+  var item = path.resolve(watchitem);
 
-  var exclude = [ 'dist', 'node_modules', '.git', '.+\.uijs\..+' ];
-  
-  console.log('Watching', dir, 'exclude:', exclude);
-  watch(dir, { exclude: exclude }, function(event) {
-    if (!event.isModify() || building) return;
+  return fs.stat(item, function(err, stat) {
+    if (err) {
+      console.error('unable to watch ' + item);
+      return;
+    }
 
-    console.log(event.name + ' changed. rebuilding');
-    building = true;
-    return build(app, function(err) {
-      building = false;
-      if (err) {
-        console.error('build failed');
-        console.error(err);
-        return;
-      }
+    var dir = stat.isDirectory() ? item : path.dirname(item);
+
+    var exclude = [ 'dist', 'node_modules', '.git', /\.tmp.+/ ];
+    
+    console.log('Watching', dir, 'exclude:', exclude);
+    watch(dir, { exclude: exclude }, function(event) {
+      if (!event.isModify() || building) return;
+
+      console.log(event.name + ' changed. rebuilding');
+      building = true;
+      return build(app, function(err) {
+        building = false;
+        if (err) {
+          console.error('build failed');
+          console.error(err);
+          return;
+        }
+      });
     });
+
   });
+
 });
 
 if (command === 'build') {
@@ -70,7 +81,7 @@ if (command === 'build') {
   });
 } else if (command === 'debug') {
   return build(app, function(err, p) {
-    return debug(p, function(err) {
+    return debug(p.outputs, function(err) {
       if (err) console.error(err);
     });
   });
