@@ -2,7 +2,7 @@
   "author": "",
   "name": "uijs-devtools",
   "description": "Toolchain (build, debugger) for uijs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "./lib",
   "dependencies": {
     "optimist": "0.3.4",
