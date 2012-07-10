@@ -19,7 +19,7 @@
     <script>
     window.onload = function() {
       var uijs = require('uijs');
-      var constant = uijs.util.constant;
+      var positioning = uijs.positioning;
 
       if (!main || !uijs.box.isbox(main)) {
         throw new Error('Main module must export a box')
@@ -31,10 +31,10 @@
 
       // -- add main box to canvas
 
-      main.x = constant(0);
-      main.y = constant(0);
-      main.width = canvas.width;
-      main.height = canvas.height;
+      main.x = 0;
+      main.y = 0;
+      main.width = positioning.parent.width();
+      main.height = positioning.parent.height();
 
       canvas.add(main);
 
