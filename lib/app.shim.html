@@ -46,22 +46,31 @@
       script.onload = function() {
         if (typeof io !== 'undefined') {
           var socket = io.connect('/');
-          var term = uijs.rterm(socket);
-          canvas.add(term);
 
-          window.console.log = function() {
-            var args = [];
-            for (var i = 0; i < arguments.length; ++i) {
-              args.push(arguments[i]);
+          [ 'log', 'info', 'warn', 'error' ].forEach(function(level) {
+            window.console[level] = function() {
+              var args = [];
+              
+              for (var i = 0; i < arguments.length; ++i) {
+                args.push(arguments[i]);
+              }
+
+              var line = {
+                level: level,
+                time: Date.now(),
+                args: args,
+              };
+
+              socket.emit('log', line);
             }
-
-            term.writeLine.apply(null, args);
-          };
+          });
         }
       };
+
       script.onerror = function(e) {
         e.preventDefault();
       };
+      
       script.type = 'text/javascript';
       script.async = true;
       script.src = '/socket.io/socket.io.js';
