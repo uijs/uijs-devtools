@@ -2,6 +2,8 @@
   <head>
     <meta name="viewport" content="width=320, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
     <style>
       body {
         margin: 0px; 
@@ -20,6 +22,14 @@
     window.onload = function() {
       var uijs = require('uijs');
       var positioning = uijs.positioning;
+
+      var main = window.main;
+
+      // if `main` is a function, call it.
+      if (typeof main === 'function') {
+        console.log('main is a function. treating as a box factory');
+        main = main();
+      }
 
       if (!main || !uijs.box.isbox(main)) {
         throw new Error('Main module must export a box')

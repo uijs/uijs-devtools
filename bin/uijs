@@ -22,13 +22,15 @@ var usage = [
 
 var optimist = require('optimist')
   .usage(usage.join('\n'))
-  .describe('w', 'watch for changes (defaults to cwd). multiple -w options may be used').alias('w', 'watch')
-  .describe('verbose', 'verbose output').alias('v', 'verbose')
-  .alias('h', 'help');
+  .describe('watch', 'watch for changes (defaults to cwd). multiple -w options may be used').alias('watch', 'w')
+  .describe('verbose', 'verbose output').alias('verbose', 'v')
+  .describe('output', 'path to output directory (default is ./dist)').alias('output', 'o')
+  .describe('html', 'path to html output (default is dist/<entrypoint>.uijs.html)').alias('html', 'h')
+  .describe('help', 'prints usage and options')
 
 var argv = optimist.argv;
 
-if (argv.h || argv._.length < 1 || argv._.length > 2) {
+if (argv.help || argv._.length < 1 || argv._.length > 2) {
   process.stdout.write(optimist.help());
   return;
 }
@@ -40,6 +42,18 @@ var watchlist = argv.watch;
 if (!watchlist) watchlist = [];
 if (watchlist === true) watchlist = [ app ];
 else if (!Array.isArray(watchlist)) watchlist = [ watchlist ];
+
+var options = {};
+
+options.main = app;
+
+if (argv.html) {
+  options.html = argv.html;
+}
+
+if (argv.output) {
+  options.out = argv.output;
+}
 
 var building = false;
 watchlist.forEach(function(watchitem) {
@@ -61,7 +75,7 @@ watchlist.forEach(function(watchitem) {
 
       console.log(event.name + ' changed. rebuilding');
       building = true;
-      return build(app, function(err) {
+      return build(options, function(err) {
         building = false;
         if (err) {
           console.error('build failed');
@@ -75,12 +89,14 @@ watchlist.forEach(function(watchitem) {
 
 });
 
+
+
 if (command === 'build') {
-  return build(app, function(err) {
+  return build(options, function(err) {
     if (err) console.error(err);
   });
 } else if (command === 'debug') {
-  return build(app, function(err, p) {
+  return build(options, function(err, p) {
     return debug(p.outputs, function(err) {
       if (err) console.error(err);
     });
