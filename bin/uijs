@@ -1,9 +1,12 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --prof
 var path = require('path');
 var fs = require('fs');
 var watch = require('fs-watch-tree').watchTree;
 var build = require('../lib/build');
 var debug = require('../lib/debugger');
+var bench = require('../lib/bench');
+var vm = require('vm');
+var exec = require('child_process').exec;
 
 var usage = [
   'Development tools for uijs apps and modules',
@@ -12,6 +15,8 @@ var usage = [
   '<command> is one of:',
   '  build - Builds a uijs module or app',
   '  debug - Starts a debugging server for a uijs module/app (also builds)',
+  '  bench - Runs a benchmark against mock canvas for --duration (also builds)',
+  '  prof - Runs a benchmark and assumes --prof (sugar!)',
   '',
   '<app> is is one of:',
   '  (not specified) - Looks for package.json in current directory',
@@ -26,6 +31,8 @@ var optimist = require('optimist')
   .describe('verbose', 'verbose output').alias('verbose', 'v')
   .describe('output', 'path to output directory (default is ./dist)').alias('output', 'o')
   .describe('html', 'path to html output (default is dist/<entrypoint>.uijs.html)').alias('html', 'h')
+  .describe('duration', 'duration of benchmark in seconds (default 5 seconds)').default('duration', 5)
+  .describe('prof', 'output profiling information to stdout after benchmark')
   .describe('help', 'prints usage and options')
 
 var argv = optimist.argv;
@@ -42,6 +49,11 @@ var watchlist = argv.watch;
 if (!watchlist) watchlist = [];
 if (watchlist === true) watchlist = [ app ];
 else if (!Array.isArray(watchlist)) watchlist = [ watchlist ];
+
+if (command === 'prof') {
+  command = 'bench';
+  argv.prof = true;
+}
 
 var options = {};
 
@@ -84,21 +96,36 @@ watchlist.forEach(function(watchitem) {
         }
       });
     });
-
   });
-
 });
 
-
-
 if (command === 'build') {
-  return build(options, function(err) {
+  return build(options, function(err, result) {
     if (err) console.error(err);
+    else {
+      console.log(result.outputs.html);
+      console.log(result.outputs.js);
+    }
   });
 } else if (command === 'debug') {
   return build(options, function(err, p) {
-    return debug(p.outputs, function(err) {
+    return debug(p.outputs, function(err, port) {
       if (err) console.error(err);
+      console.log('http://localhost:' + port);
+    });
+  });
+} else if (command === 'bench') {
+  build(options, function(err, result) {
+    return bench(result.outputs.js, { duration: argv.duration * 1000 }, function(err, fps) {
+      if (argv.prof) {
+        return exec(path.join(__dirname, '..', 'node_modules', '.bin', 'node-tick-processor'), function(err, stdout, stderr) {
+          console.log(stdout);
+          console.log(options.main, fps + 'fps');
+        });
+      }
+      else {
+        console.log(options.main, fps + 'fps');
+      }
     });
   });
 } else {

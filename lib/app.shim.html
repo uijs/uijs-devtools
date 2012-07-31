@@ -39,6 +39,10 @@
 
       var canvas = uijs.canvasize();
 
+      canvas.on('fps', function(fps) {
+        console.log('fps:', fps);
+      });
+
       // -- add main box to canvas
 
       main.x = 0;

@@ -14,7 +14,8 @@
     "mkdirp": "*",
     "fs-watch-tree": "0.2.1",
     "ncp": "0.2.6",
-    "browserify": "1.13.5"
+    "browserify": "1.13.5",
+    "tick": "0.0.1"
   },
   "bin": {
     "uijs": "bin/uijs"
