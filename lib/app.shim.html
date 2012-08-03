@@ -22,6 +22,7 @@
     window.onload = function() {
       var uijs = require('uijs');
       var positioning = uijs.positioning;
+      var bind = uijs.bind;
 
       var main = window.main;
 
@@ -47,8 +48,8 @@
 
       main.x = 0;
       main.y = 0;
-      main.width = positioning.parent.width();
-      main.height = positioning.parent.height();
+      main.width = bind(main, 'width', positioning.parent.width());
+      main.height = bind(main, 'height', positioning.parent.height());
 
       canvas.add(main);
 
