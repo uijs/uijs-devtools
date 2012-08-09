@@ -61,8 +61,10 @@
       script.onload = function() {
         if (typeof io !== 'undefined') {
           var socket = io.connect('/');
+          var old_console = {};
 
           [ 'log', 'info', 'warn', 'error' ].forEach(function(level) {
+            old_console[level] = window.console[level];
             window.console[level] = function() {
               var args = [];
               
@@ -77,6 +79,9 @@
               };
 
               socket.emit('log', line);
+
+              // also emit to console
+              old_console[level].apply(window.console, arguments);
             }
           });
         }

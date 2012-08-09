@@ -79,7 +79,7 @@ watchlist.forEach(function(watchitem) {
 
     var dir = stat.isDirectory() ? item : path.dirname(item);
 
-    var exclude = [ 'dist', 'node_modules', '.git', /\.tmp.+/ ];
+    var exclude = [ 'dist', 'node_modules', '.git', /\.tmp.+/, 'v8.log' ];
     
     console.log('Watching', dir, 'exclude:', exclude);
     watch(dir, { exclude: exclude }, function(event) {
