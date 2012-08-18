@@ -31,7 +31,7 @@
         main = main();
       }
 
-      if (!main || !uijs.box.isbox(main)) {
+      if (!main || !main._is_box) {
         throw new Error('Main module must export a box')
       }
       
