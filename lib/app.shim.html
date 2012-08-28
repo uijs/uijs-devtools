@@ -31,7 +31,7 @@
         main = main();
       }
 
-      if (!main || !main._is_box) {
+      if (!main || !main.is_box) {
         throw new Error('Main module must export a box')
       }
       
@@ -52,46 +52,48 @@
 
       // -- remote logging
 
-      // try to load socket.io asynchronously from /socket.io/socket.io.js and fail 
-      // gracefully if it doesn't exist
-      var script = document.createElement('script');
-      script.onload = function() {
-        if (typeof io !== 'undefined') {
-          var socket = io.connect('/');
-          var old_console = {};
+      // console.log = function() {};
 
-          [ 'log', 'info', 'warn', 'error' ].forEach(function(level) {
-            old_console[level] = window.console[level];
-            window.console[level] = function() {
-              var args = [];
+      // // try to load socket.io asynchronously from /socket.io/socket.io.js and fail 
+      // // gracefully if it doesn't exist
+      // var script = document.createElement('script');
+      // script.onload = function() {
+      //   if (typeof io !== 'undefined') {
+      //     var socket = io.connect('/');
+      //     var old_console = {};
+
+      //     [ 'log', 'info', 'warn', 'error' ].forEach(function(level) {
+      //       old_console[level] = window.console[level];
+      //       window.console[level] = function() {
+      //         var args = [];
               
-              for (var i = 0; i < arguments.length; ++i) {
-                args.push(arguments[i]);
-              }
+      //         for (var i = 0; i < arguments.length; ++i) {
+      //           args.push(arguments[i]);
+      //         }
 
-              var line = {
-                level: level,
-                time: Date.now(),
-                args: args,
-              };
+      //         var line = {
+      //           level: level,
+      //           time: Date.now(),
+      //           args: args,
+      //         };
 
-              socket.emit('log', line);
+      //         socket.emit('log', line);
 
-              // also emit to console
-              old_console[level].apply(window.console, arguments);
-            }
-          });
-        }
-      };
+      //         // also emit to console
+      //         old_console[level].apply(window.console, arguments);
+      //       }
+      //     });
+      //   }
+      // };
 
-      script.onerror = function(e) {
-        e.preventDefault();
-      };
+      // script.onerror = function(e) {
+      //   e.preventDefault();
+      // };
       
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = '/socket.io/socket.io.js';
-      document.getElementsByTagName('head')[0].appendChild(script);
+      // script.type = 'text/javascript';
+      // script.async = true;
+      // script.src = '/socket.io/socket.io.js';
+      // document.getElementsByTagName('head')[0].appendChild(script);
     };
     </script>
   </body>
