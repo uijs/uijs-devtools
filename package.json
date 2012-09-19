@@ -1,5 +1,5 @@
 {
-  "author": "",
+  "author": "Elad Ben-Israel <elad.benisrael@gmail.com>",
   "name": "uijs-devtools",
   "description": "Toolchain (build, debugger) for uijs",
   "version": "0.0.1",

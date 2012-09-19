@@ -1,5 +1,7 @@
 # devtools for uijs
 
+[![Build Status](https://secure.travis-ci.org/uijs/uijs-devtools.png)](http://travis-ci.org/uijs/uijs-devtools)
+
 The toolchain for developing, building and devugging uijs modules and apps.
 
 ## Hello, world
