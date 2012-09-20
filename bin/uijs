@@ -7,9 +7,10 @@ var debug = require('../lib/debugger');
 var bench = require('../lib/bench');
 var vm = require('vm');
 var exec = require('child_process').exec;
+var package = require('../package.json');
 
 var usage = [
-  'Development tools for uijs apps and modules',
+  'Development tools for uijs apps and modules (version ' + package.version + ')',
   'Usage: $0 <command> <app> [options]',
   '',
   '<command> is one of:',

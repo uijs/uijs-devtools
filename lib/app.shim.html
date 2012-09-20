@@ -20,8 +20,7 @@
     </script>
     <script>
     window.onload = function() {
-      var uijs = require('uijs-core');
-      var positioning = uijs.positioning;
+      var uijs = require('uijs');
 
       var main = window.main;
 
@@ -50,9 +49,7 @@
 
       canvas.add(main);
 
-      // -- remote logging
-
-      // console.log = function() {};
+      // // -- remote logging
 
       // // try to load socket.io asynchronously from /socket.io/socket.io.js and fail 
       // // gracefully if it doesn't exist
