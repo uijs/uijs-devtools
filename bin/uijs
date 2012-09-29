@@ -34,6 +34,7 @@ var optimist = require('optimist')
   .describe('html', 'path to html output (default is dist/<entrypoint>.uijs.html)').alias('html', 'h')
   .describe('duration', 'duration of benchmark in seconds (default 5 seconds)').default('duration', 5)
   .describe('prof', 'output profiling information to stdout after benchmark')
+  .describe('port', 'port to listen for `debug`').alias('port', 'p')
   .describe('help', 'prints usage and options')
 
 var argv = optimist.argv;
@@ -66,6 +67,10 @@ if (argv.html) {
 
 if (argv.output) {
   options.out = argv.output;
+}
+
+if (argv.port) {
+  options.port = argv.port;
 }
 
 var building = false;
@@ -110,6 +115,7 @@ if (command === 'build') {
   });
 } else if (command === 'debug') {
   return build(options, function(err, p) {
+    p.outputs.port = options.port; //HACK!
     return debug(p.outputs, function(err, port) {
       if (err) console.error(err);
       console.log('http://localhost:' + port);

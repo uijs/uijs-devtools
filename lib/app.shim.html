@@ -20,7 +20,10 @@
     </script>
     <script>
     window.onload = function() {
-      var uijs = require('uijs');
+
+      var uijs;
+      try { uijs = require('uijs'); }
+      catch(e) { uijs = require('uijs-core'); }
 
       var main = window.main;
 
